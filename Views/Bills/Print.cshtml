@@ -1,0 +1,264 @@
+@model SalesBill
+@{
+    Layout = null;
+
+    var setting = ViewBag.AppSetting;
+    string shopName = setting?.ShopName ?? "Smart POS Store";
+    string address = setting?.Address ?? "";
+    string phone = setting?.Phone ?? "";
+    string gstNumber = setting?.GstNumber ?? "";
+    string currency = setting?.CurrencySymbol ?? "&#8377;";
+    string footerMessage = setting?.FooterMessage ?? "Thank you, visit again!";
+    string printSize = setting?.PrintSize ?? "80mm";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Model.BillNo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+
+        /* Reset */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Base */
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #111;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Receipt Container */
+        body.print-58mm .receipt { width: 280px; }
+        body.print-80mm .receipt { width: 360px; }
+        body.print-a4 .receipt { width: 720px; }
+
+        .receipt {
+            width: 360px;
+            max-width: 100%;
+            margin: 0 auto;
+            background: #fff;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.10);
+        }
+
+        /* Utilities */
+        .center { text-align: center; }
+
+        .muted {
+            color: #555;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* Shop Header */
+        .shop-name {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        /* Divider */
+        .divider {
+            border-top: 1px dashed #999;
+            margin: 12px 0;
+        }
+
+        /* Bill Info */
+        .bill-info {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .bill-no {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        /* Items Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            text-align: left;
+            border-bottom: 1px dashed #999;
+            padding: 6px 0;
+        }
+
+        td {
+            padding: 7px 0;
+            border-bottom: 1px dashed #ddd;
+            vertical-align: top;
+        }
+
+        .right { text-align: right; }
+
+        .item-name {
+            font-weight: 700;
+        }
+
+        .item-code {
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* Summary */
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 9px 0;
+            font-size: 15px;
+        }
+
+        .total-row {
+            font-size: 20px;
+            font-weight: 800;
+            border-top: 2px solid #111;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        /* Thank You  */
+        .thanks {
+            font-size:15px;
+            font-weight: 700;
+            margin-top:14px;
+        }
+
+        /* Print Button Row */
+        .print-actions {
+            width: 360px;
+            max-width: 100%;
+            margin: 16px auto 0;
+            text-align: center;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: 0;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* Print Media Query */
+        @@media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .receipt {
+                box-shadow: none;
+                border-radius: 0;
+                width: 80mm;
+                padding: 10px;
+            }
+
+            .print-actions {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body class="print-@(printSize == "A4" ? "a4" : printSize)">
+
+    <div class="receipt">
+
+        @* Shop Header *@
+        <div class="center">
+            <div class="shop-name">@shopName</div>
+
+            @if (!string.IsNullOrWhiteSpace(address))
+            {
+                <div class="muted">@address</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(phone))
+            {
+                <div class="muted">Phone: @phone</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(gstNumber))
+            {
+                <div class="muted">GST: @gstNumber</div>
+            }
+        </div>
+
+        <div class="divider"></div>
+
+        @* Bill Number & Date*@
+        <div class="bill-info">
+            <div class="center bill-no">Bill: @Model.BillNo</div>
+            <div class="center muted">@Model.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</div>
+        </div>
+
+        <div class="divider"></div>
+
+        @* Items Table *@
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th class="right">Qty</th>
+                    <th class="right">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            <div class="item-name">@item.Product?.ProductName</div>
+                            <div class="item-code">@item.Product?.SKU</div>
+                            <div class="item-code">@currency @item.Price each</div>
+                        </td>
+                        <td class="right">@item.Qty</td>
+                        <td class="right">@currency @item.Total.ToString("0.00")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="divider"></div>
+
+        @* Totals Summary *@
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <b>@currency @Model.SubTotal.ToString("0.00")</b>
+        </div>
+
+        <div class="summary-row">
+            <span>Discount (@Model.DiscountPercent.ToString("0.##")%)</span>
+            <b>@currency @Model.DiscountAmount.ToString("0.00")</b>
+        </div>
+
+        <div class="summary-row total-row">
+            <span>Total</span>
+            <span>@currency @Model.TotalAmount.ToString("0.00")</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="center thanks">@footerMessage</div>
+
+    </div>
+
+    <div class="print-actions">
+        <button onclick="window.print()">Print Bill</button>
+    </div>
+
+</body>
+</html>

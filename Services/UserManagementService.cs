@@ -1,0 +1,240 @@
+using Microsoft.AspNetCore.Identity;
+using SmartBarcodePOS_Pro.Models;
+using SmartBarcodePOS_Pro.ViewModels;
+
+namespace SmartBarcodePOS_Pro.Services;
+
+public class UserManagementService : IUserManagementService
+{
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    public UserManagementService(
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager)
+    {
+        _userManager = userManager;
+        _roleManager = roleManager;
+    }
+
+    public async Task<List<UserListViewModel>> GetUsersAsync()
+    {
+        var users = _userManager.Users.OrderBy(x => x.Email).ToList();
+        var list = new List<UserListViewModel>();
+
+        foreach (var user in users)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+
+            list.Add(new UserListViewModel
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email ?? "",
+                PhoneNumber = user.PhoneNumber,
+                RoleName = roles.FirstOrDefault() ?? "",
+                IsActive = IsUserActive(user)
+            });
+        }
+
+        return list;
+    }
+
+    public CreateUserViewModel GetCreateModel()
+    {
+        return new CreateUserViewModel
+        {
+            RoleName = "SubAdmin",
+            IsActive = true
+        };
+    }
+
+    public async Task<EditUserViewModel?> GetEditModelAsync(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null)
+            return null;
+
+        var roles = await _userManager.GetRolesAsync(user);
+
+        return new EditUserViewModel
+        {
+            Id = user.Id,
+            FullName = user.FullName,
+            Email = user.Email ?? "",
+            PhoneNumber = user.PhoneNumber,
+            RoleName = roles.FirstOrDefault() ?? "SubAdmin",
+            IsActive = IsUserActive(user)
+        };
+    }
+
+    public async Task<(ServiceResult Result, Dictionary<string, List<string>> Errors)> CreateUserAsync(CreateUserViewModel model)
+    {
+        var errors = new Dictionary<string, List<string>>();
+
+        if (!IsValidRole(model.RoleName))
+        {
+            AddError(errors, nameof(model.RoleName), "Invalid role selected.");
+            return (ServiceResult.Fail("Invalid role selected."), errors);
+        }
+
+        var existing = await _userManager.FindByEmailAsync(model.Email.Trim());
+        if (existing != null)
+        {
+            AddError(errors, nameof(model.Email), "This email already exists.");
+            return (ServiceResult.Fail("This email already exists."), errors);
+        }
+
+        if (!await _roleManager.RoleExistsAsync(model.RoleName))
+            await _roleManager.CreateAsync(new IdentityRole(model.RoleName));
+
+        var user = new ApplicationUser
+        {
+            FullName = model.FullName.Trim(),
+            UserName = model.Email.Trim(),
+            Email = model.Email.Trim(),
+            PhoneNumber = model.PhoneNumber?.Trim(),
+            EmailConfirmed = true,
+            LockoutEnabled = true,
+            LockoutEnd = model.IsActive ? null : DateTimeOffset.MaxValue
+        };
+
+        var createResult = await _userManager.CreateAsync(user, model.Password);
+
+        if (!createResult.Succeeded)
+        {
+            AddIdentityErrors(errors, createResult);
+            return (ServiceResult.Fail("Unable to create user."), errors);
+        }
+
+        await _userManager.AddToRoleAsync(user, model.RoleName);
+
+        return (ServiceResult.Ok("User created successfully."), errors);
+    }
+
+    public async Task<(ServiceResult Result, Dictionary<string, List<string>> Errors)> UpdateUserAsync(EditUserViewModel model)
+    {
+        var errors = new Dictionary<string, List<string>>();
+
+        if (!IsValidRole(model.RoleName))
+        {
+            AddError(errors, nameof(model.RoleName), "Invalid role selected.");
+            return (ServiceResult.Fail("Invalid role selected."), errors);
+        }
+
+        var user = await _userManager.FindByIdAsync(model.Id);
+        if (user == null)
+            return (ServiceResult.Fail("User not found."), errors);
+
+        var emailOwner = await _userManager.FindByEmailAsync(model.Email.Trim());
+        if (emailOwner != null && emailOwner.Id != user.Id)
+        {
+            AddError(errors, nameof(model.Email), "This email already exists.");
+            return (ServiceResult.Fail("This email already exists."), errors);
+        }
+
+        user.FullName = model.FullName.Trim();
+        user.Email = model.Email.Trim();
+        user.UserName = model.Email.Trim();
+        user.PhoneNumber = model.PhoneNumber?.Trim();
+        user.LockoutEnabled = true;
+        user.LockoutEnd = model.IsActive ? null : DateTimeOffset.MaxValue;
+
+        var updateResult = await _userManager.UpdateAsync(user);
+
+        if (!updateResult.Succeeded)
+        {
+            AddIdentityErrors(errors, updateResult);
+            return (ServiceResult.Fail("Unable to update user."), errors);
+        }
+
+        var currentRoles = await _userManager.GetRolesAsync(user);
+        await _userManager.RemoveFromRolesAsync(user, currentRoles);
+        await _userManager.AddToRoleAsync(user, model.RoleName);
+
+        return (ServiceResult.Ok("User updated successfully."), errors);
+    }
+
+    public async Task<ServiceResult> ToggleStatusAsync(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null)
+            return ServiceResult.Fail("User not found.");
+
+        var isActive = IsUserActive(user);
+
+        user.LockoutEnabled = true;
+        user.LockoutEnd = isActive ? DateTimeOffset.MaxValue : null;
+
+        await _userManager.UpdateAsync(user);
+
+        return ServiceResult.Ok(isActive ? "User inactivated successfully." : "User activated successfully.");
+    }
+
+    public async Task<(AdminResetPasswordViewModel? Model, string? UserName, string? Email)> GetResetPasswordModelAsync(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null)
+            return (null, null, null);
+
+        return (new AdminResetPasswordViewModel { Id = user.Id }, user.FullName, user.Email);
+    }
+
+    public async Task<(ServiceResult Result, Dictionary<string, List<string>> Errors, string? UserName, string? Email)> ResetPasswordAsync(AdminResetPasswordViewModel model)
+    {
+        var errors = new Dictionary<string, List<string>>();
+        var user = await _userManager.FindByIdAsync(model.Id);
+
+        if (user == null)
+            return (ServiceResult.Fail("User not found."), errors, null, null);
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+
+        if (!result.Succeeded)
+        {
+            AddIdentityErrors(errors, result);
+            return (ServiceResult.Fail("Unable to reset password."), errors, user.FullName, user.Email);
+        }
+
+        return (ServiceResult.Ok("Password reset successfully."), errors, user.FullName, user.Email);
+    }
+
+    public async Task<ServiceResult> DeleteUserAsync(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null)
+            return ServiceResult.Fail("User not found.");
+
+        var result = await _userManager.DeleteAsync(user);
+
+        if (!result.Succeeded)
+            return ServiceResult.Fail(result.Errors.FirstOrDefault()?.Description ?? "Unable to delete user.");
+
+        return ServiceResult.Ok("User deleted successfully.");
+    }
+
+    private static bool IsUserActive(ApplicationUser user)
+    {
+        return user.LockoutEnd == null || user.LockoutEnd <= DateTimeOffset.Now;
+    }
+
+    private static bool IsValidRole(string roleName)
+    {
+        return roleName == "Admin" || roleName == "SubAdmin" || roleName == "Cashier";
+    }
+
+    private static void AddIdentityErrors(Dictionary<string, List<string>> errors, IdentityResult result)
+    {
+        foreach (var error in result.Errors)
+            AddError(errors, string.Empty, error.Description);
+    }
+
+    private static void AddError(Dictionary<string, List<string>> errors, string key, string message)
+    {
+        if (!errors.ContainsKey(key))
+            errors[key] = new List<string>();
+
+        errors[key].Add(message);
+    }
+}

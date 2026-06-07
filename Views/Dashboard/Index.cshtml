@@ -1,0 +1,183 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard-pro-page">
+    <div class="row g-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="pos-ui-card stat-card-pro d-flex justify-content-between align-items-start">
+                <div>
+                    <small>Today's Sales</small>
+                    <h2>₹@Model.TodaysSales.ToString("0.00")</h2>
+                    <span class="pos-badge soft-green">Today</span>
+                </div>
+                <div class="icon-bubble bg-green">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="pos-ui-card stat-card-pro d-flex justify-content-between align-items-start">
+                <div>
+                    <small>Total Bills</small>
+                    <h2>@Model.TotalBills</h2>
+                    <span class="pos-badge soft-blue">Invoices</span>
+                </div>
+                <div class="icon-bubble bg-blue">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="pos-ui-card stat-card-pro d-flex justify-content-between align-items-start">
+                <div>
+                    <small>Total Products</small>
+                    <h2>@Model.TotalProducts</h2>
+                    <span class="pos-badge soft-green">Active Stock</span>
+                </div>
+                <div class="icon-bubble bg-purple">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="pos-ui-card stat-card-pro d-flex justify-content-between align-items-start">
+                <div>
+                    <small>Low Stock</small>
+                    <h2>@Model.LowStockProducts</h2>
+                    <span class="pos-badge soft-red">Need Refill</span>
+                </div>
+                <div class="icon-bubble bg-red">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-1">
+        <div class="col-lg-8">
+            <div class="pos-ui-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h5 class="fw-bold mb-0">Quick Actions</h5>
+                        <small class="text-muted">Fast access for shop owner/cashier</small>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <a asp-controller="Billing" asp-action="Index" class="quick-action-pro">
+                            <div class="icon-bubble bg-green">
+                                <i class="fa-solid fa-cash-register"></i>
+                            </div>
+                            <div>
+                                <b>Open POS Billing</b><br>
+                                <small class="text-muted">Start new customer bill</small>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a asp-controller="Products" asp-action="Create" class="quick-action-pro">
+                            <div class="icon-bubble bg-blue">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <div>
+                                <b>Add Product</b><br>
+                                <small class="text-muted">Create barcode product</small>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a asp-controller="Brands" asp-action="Index" class="quick-action-pro">
+                            <div class="icon-bubble bg-orange">
+                                <i class="fa-solid fa-tags"></i>
+                            </div>
+                            <div>
+                                <b>Manage Brands</b><br>
+                                <small class="text-muted">Brand/category setup</small>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a asp-controller="Reports" asp-action="DailySales" class="quick-action-pro">
+                            <div class="icon-bubble bg-purple">
+                                <i class="fa-solid fa-chart-simple"></i>
+                            </div>
+                            <div>
+                                <b>View Reports</b><br>
+                                <small class="text-muted">Sales and stock report</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pos-ui-card p-4 mt-4">
+                <h5 class="fw-bold mb-1">POS Workflow</h5>
+                <small class="text-muted">Recommended daily counter process</small>
+
+                <div class="workflow-line mt-4">
+                    <div class="workflow-step">
+                        <span>1</span>
+                        <b>Add Product</b>
+                        <small>Generate barcode</small>
+                    </div>
+                    <div class="workflow-step">
+                        <span>2</span>
+                        <b>Scan Item</b>
+                        <small>Open billing counter</small>
+                    </div>
+                    <div class="workflow-step">
+                        <span>3</span>
+                        <b>Generate Bill</b>
+                        <small>Print receipt</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="pos-ui-card p-4">
+                <h5 class="fw-bold mb-0">Business Summary</h5>
+                <small class="text-muted">Overall performance</small>
+
+                <div class="mt-3">
+                    <div class="summary-row-light">
+                        <div>
+                            <b>Total Sales</b><br>
+                            <small>All time sales amount</small>
+                        </div>
+                        <span class="pos-badge soft-green">₹@Model.TotalSales.ToString("0.00")</span>
+                    </div>
+
+                    <div class="summary-row-light">
+                        <div>
+                            <b>Total Products</b><br>
+                            <small>Available products</small>
+                        </div>
+                        <span class="pos-badge soft-blue">@Model.TotalProducts</span>
+                    </div>
+
+                    <div class="summary-row-light">
+                        <div>
+                            <b>Low Stock Alert</b><br>
+                            <small>Products below minimum stock</small>
+                        </div>
+                        <span class="pos-badge soft-red">@Model.LowStockProducts</span>
+                    </div>
+                </div>
+
+                <a asp-controller="Reports" asp-action="StockReport" class="btn btn-outline-primary rounded-pill w-100 mt-3">
+                    View Stock Report
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

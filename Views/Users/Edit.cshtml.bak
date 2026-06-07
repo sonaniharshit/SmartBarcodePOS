@@ -1,0 +1,64 @@
+@model EditUserViewModel
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Edit User</h5>
+        <small class="text-muted">Update admin or sub admin user details.</small>
+    </div>
+
+    <div class="card-body p-4">
+        <form asp-action="Edit" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+            <input asp-for="Id" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+
+            <div class="col-md-6">
+                <label asp-for="FullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="RoleName" class="form-label">User Role <span class="text-danger">*</span></label>
+                <select asp-for="RoleName" class="form-select">
+                    <option value="SubAdmin">Sub Admin</option>
+                    <option value="Admin">Admin</option>
+                </select>
+                <span asp-validation-for="RoleName" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-check mt-4">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+                <button class="btn btn-success px-4">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Update User
+                </button>
+                <a asp-action="Index" class="btn btn-light px-4">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

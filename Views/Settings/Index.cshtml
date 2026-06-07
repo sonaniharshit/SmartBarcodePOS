@@ -1,0 +1,98 @@
+@model AppSettingViewModel
+@{
+    ViewData["Title"] = "Business Settings";
+}
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h5 class="fw-bold mb-0">Business Settings</h5>
+                <small class="text-muted">These details will appear on the printed bill.</small>
+            </div>
+
+            <div class="card-body p-4">
+                <form asp-action="Index" method="post">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="AppSettingId" type="hidden" />
+
+                    <div class="mb-3">
+                        <label asp-for="ShopName" class="form-label">Business Name <span class="text-danger">*</span></label>
+                        <input asp-for="ShopName" class="form-control" placeholder="Example: Krishna Super Store" />
+                        <span asp-validation-for="ShopName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label"></label>
+                        <textarea asp-for="Address" class="form-control" rows="3" placeholder="Shop address"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Phone" class="form-label"></label>
+                        <input asp-for="Phone" class="form-control" placeholder="Mobile / landline number" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="GstNumber" class="form-label"></label>
+                        <input asp-for="GstNumber" class="form-control" placeholder="Example: 24ABCDE1234F1Z5" />
+                        <small class="text-muted">Optional. Leave blank if GST is not applicable.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CurrencySymbol" class="form-label">Currency Symbol <span class="text-danger">*</span></label>
+                        <input asp-for="CurrencySymbol" class="form-control" placeholder="₹" />
+                        <span asp-validation-for="CurrencySymbol" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="fa-solid fa-floppy-disk me-1"></i> Save Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h5 class="fw-bold mb-0">Receipt Preview</h5>
+                <small class="text-muted">Sample bill header preview.</small>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="receipt-preview">
+                    <div class="text-center">
+                        <h4 class="fw-bold mb-1">@Model.ShopName</h4>
+                        @if (!string.IsNullOrWhiteSpace(Model.Address))
+                        {
+                            <div>@Model.Address</div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.Phone))
+                        {
+                            <div>Phone: @Model.Phone</div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.GstNumber))
+                        {
+                            <div>GST: @Model.GstNumber</div>
+                        }
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between">
+                        <span>Bill No:</span>
+                        <b>INV-202600001</b>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Total:</span>
+                        <b>@Model.CurrencySymbol 100.00</b>
+                    </div>
+                    <hr />
+                    <div class="text-center">Thank you!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

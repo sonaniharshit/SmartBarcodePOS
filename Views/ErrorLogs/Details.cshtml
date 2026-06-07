@@ -1,0 +1,28 @@
+@model ErrorLog
+@{
+    ViewData["Title"] = "Error Details";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between">
+        <div>
+            <h5 class="fw-bold mb-0">Error Details</h5>
+            <small class="text-muted">@Model.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</small>
+        </div>
+        <a asp-action="Index" class="btn btn-light">Back</a>
+    </div>
+
+    <div class="card-body p-4">
+        <table class="table table-bordered">
+            <tr><th>Controller</th><td>@Model.ControllerName</td></tr>
+            <tr><th>Action</th><td>@Model.ActionName</td></tr>
+            <tr><th>Path</th><td>@Model.RequestPath</td></tr>
+            <tr><th>User</th><td>@Model.UserName</td></tr>
+            <tr><th>Message</th><td>@Model.ErrorMessage</td></tr>
+            <tr><th>Inner Exception</th><td>@Model.InnerException</td></tr>
+        </table>
+
+        <h6 class="fw-bold mt-4">Stack Trace</h6>
+        <pre class="bg-light p-3 rounded border" style="white-space:pre-wrap;">@Model.StackTrace</pre>
+    </div>
+</div>

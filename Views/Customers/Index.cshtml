@@ -1,0 +1,69 @@
+@model List<Customer>
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h5 class="fw-bold mb-0">Customer List</h5>
+            <small class="text-muted">Manage customers and loyalty points.</small>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fa-solid fa-user-plus me-1"></i> Add Customer
+        </a>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Mobile</th>
+                    <th>Address</th>
+                    <th>Points</th>
+                    <th>Status</th>
+                    <th style="width: 120px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CustomerName</td>
+                        <td>@item.MobileNo</td>
+                        <td>@item.Address</td>
+                        <td>
+                            <span class="badge bg-primary">@item.LoyaltyPoints</span>
+                        </td>
+                        <td>
+                            @if (item.IsActive)
+                            {
+                                <span class="badge badge-soft-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-danger">Inactive</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.CustomerId"
+                               class="btn btn-sm btn-outline-success">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No customers found.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

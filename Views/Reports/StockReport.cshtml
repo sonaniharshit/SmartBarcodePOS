@@ -1,0 +1,37 @@
+@model List<Product>
+@{
+    ViewData["Title"] = "Stock Report";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Stock Report</h5>
+        <small class="text-muted">Current product stock.</small>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.SKU</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Category?.CategoryName</td>
+                        <td>&#8377;@item.Price</td>
+                        <td>@item.StockQty</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

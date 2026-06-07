@@ -1,0 +1,59 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SmartBarcodePOS_Pro.Models;
+
+namespace SmartBarcodePOS_Pro.Data;
+
+public static class DbSeeder
+{
+    public static async Task SeedAsync(IServiceProvider serviceProvider)
+    {
+        var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+        var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+        await context.Database.MigrateAsync();
+
+        if (!await roleManager.RoleExistsAsync("Admin"))
+            await roleManager.CreateAsync(new IdentityRole("Admin"));
+
+        if (!await roleManager.RoleExistsAsync("SubAdmin"))
+            await roleManager.CreateAsync(new IdentityRole("SubAdmin"));
+
+        if (!await roleManager.RoleExistsAsync("Cashier"))
+            await roleManager.CreateAsync(new IdentityRole("Cashier"));
+
+        var adminEmail = "admin@pos.com";
+        var admin = await userManager.FindByEmailAsync(adminEmail);
+
+        if (admin == null)
+        {
+            admin = new ApplicationUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                FullName = "Admin User",
+                EmailConfirmed = true
+            };
+
+            await userManager.CreateAsync(admin, "Admin@123");
+            await userManager.AddToRoleAsync(admin, "Admin");
+        }
+
+        if (!await context.AppSettings.AnyAsync())
+        {
+            context.AppSettings.Add(new AppSetting
+            {
+                ShopName = "Smart POS Store",
+                Address = "Surat, Gujarat",
+                Phone = "9876543210",
+                GstNumber = "",
+                CurrencySymbol = "₹",
+                FooterMessage = "Thank you, visit again!",
+                PrintSize = "80mm"
+            });
+        }
+
+        await context.SaveChangesAsync();
+    }
+}

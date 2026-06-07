@@ -1,0 +1,69 @@
+@model List<Brand>
+@{
+    ViewData["Title"] = "Brands";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h5 class="fw-bold mb-0">Brands</h5>
+            <small class="text-muted">Manage product brands.</small>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fa-solid fa-plus me-1"></i> Add Brand
+        </a>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>Brand Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th style="width: 160px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.BrandName</td>
+                        <td>@item.Description</td>
+                        <td>
+                            @if (item.IsActive)
+                            {
+                                <span class="badge badge-soft-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-danger">Inactive</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.BrandId"
+                               class="btn btn-sm btn-outline-success">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            <form asp-action="Delete" asp-route-id="@item.BrandId"
+                                  method="post" class="d-inline delete-form">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('.delete-form').on('submit', function (e) {
+            if (!confirm('Delete this brand?')) e.preventDefault();
+        });
+    </script>
+}

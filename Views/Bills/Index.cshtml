@@ -1,0 +1,39 @@
+@model List<SalesBill>
+@{
+    ViewData["Title"] = "Bill History";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold">Bill History</h5>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>Bill No</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model)
+                {
+                    <tr>
+                        <td>@b.BillNo</td>
+                        <td>@b.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</td>
+                        <td>&#8377;@b.TotalAmount</td>
+                        <td>
+                            <a asp-action="Print" asp-route-id="@b.SalesBillId"
+                               class="btn btn-sm btn-primary">
+                                Print
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

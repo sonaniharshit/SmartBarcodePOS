@@ -1,0 +1,43 @@
+@model List<ErrorLog>
+@{
+    ViewData["Title"] = "Error Logs";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Error Logs</h5>
+        <small class="text-muted">Latest application errors.</small>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Controller</th>
+                    <th>Action</th>
+                    <th>Error</th>
+                    <th>User</th>
+                    <th style="width:100px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</td>
+                    <td>@item.ControllerName</td>
+                    <td>@item.ActionName</td>
+                    <td>@item.ErrorMessage</td>
+                    <td>@item.UserName</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.ErrorLogId" class="btn btn-sm btn-outline-primary">
+                            View
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+@model Product
+@{ ViewData["Title"] = "Product Details"; }
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between">
+        <div><h5 class="fw-bold">@Model.ProductName</h5><small>@Model.SKU</small></div>
+        <a asp-action="Index" class="btn btn-light">Back</a>
+    </div>
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <table class="table table-bordered">
+                    <tr><th>SKU</th><td>@Model.SKU</td></tr>
+                    <tr><th>Name</th><td>@Model.ProductName</td></tr>
+                    <tr><th>Category</th><td>@Model.Category?.CategoryName</td></tr>
+                    <tr><th>Brand</th><td>@Model.Brand?.BrandName</td></tr>
+                    <tr><th>Price</th><td>₹@Model.Price</td></tr>
+                    <tr><th>Stock</th><td>@Model.StockQty</td></tr>
+                    <tr><th>Description</th><td>@Model.Description</td></tr>
+                </table>
+            </div>
+            <div class="col-lg-4">
+                <div class="barcode-sticker">
+                    <strong>@Model.ProductName</strong>
+                    <img src="@Model.BarcodeImage" class="img-fluid" />
+                    <div class="fw-bold">@Model.SKU</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,119 @@
+@{
+    var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["Action"]?.ToString();
+
+    bool isDashboard = controller == "Dashboard";
+
+    bool isCategories = controller == "Categories";
+    bool isBrands = controller == "Brands";
+    bool isProductCreate = controller == "Products" && (action == "Create" || action == "Edit");
+    bool isProductList = controller == "Products" && (action == "Index"  || action == "Details" || action == "Barcode");
+
+    bool isBilling = controller == "Billing";
+    bool isBills = controller == "Bills";
+
+    // "Sales Report" is active for both DailySales and MonthlySales
+    bool isSalesReport = controller == "Reports" && (action == "DailySales" || action == "MonthlySales");
+    bool isProductSales = controller == "Reports" && action == "ProductSales";
+    bool isTopSelling = controller == "Reports" && action == "TopSelling";
+    bool isStockReport = controller == "Reports" && action == "StockReport";
+
+    bool isBusinessSettings = controller == "Settings";
+    bool isReceiptSettings = controller == "ReceiptSettings";
+    bool isUsers = controller == "Users";
+    bool isErrorLogs = controller == "ErrorLogs";
+}
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand sidebar-brand-mobile">
+        <div>
+            <h4><i class="fa-solid fa-barcode me-2"></i>Smart POS</h4>
+            <small>Professional Billing System</small>
+        </div>
+        <button type="button" class="sidebar-close-btn" onclick="closeSidebar()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <div class="menu" id="sidebarMenu">
+
+        <div class="menu-title">Main</div>
+        <a asp-controller="Dashboard" asp-action="Index"
+           class="@(isDashboard ? "active" : "")">
+            <i class="fa-solid fa-chart-line"></i> Dashboard
+        </a>
+
+        <div class="menu-title">Products</div>
+        <a asp-controller="Brands" asp-action="Index"
+           class="@(isBrands ? "active" : "")">
+            <i class="fa-solid fa-tags"></i> Brands
+        </a>
+        <a asp-controller="Categories" asp-action="Index"
+           class="@(isCategories ? "active" : "")">
+            <i class="fa-solid fa-layer-group"></i> Categories
+        </a>
+        <a asp-controller="Products" asp-action="Create"
+           class="@(isProductCreate ? "active" : "")">
+            <i class="fa-solid fa-plus"></i> Add Product
+        </a>
+        <a asp-controller="Products" asp-action="Index"
+           class="@(isProductList ? "active" : "")">
+            <i class="fa-solid fa-boxes-stacked"></i> Product List
+        </a>
+
+        <div class="menu-title">Sales</div>
+        <a asp-controller="Billing" asp-action="Index"
+           class="@(isBilling ? "active" : "")">
+            <i class="fa-solid fa-cash-register"></i> POS Billing
+        </a>
+        <a asp-controller="Bills" asp-action="Index"
+           class="@(isBills ? "active" : "")">
+            <i class="fa-solid fa-receipt"></i> Bill History
+        </a>
+
+        <div class="menu-title">Reports</div>
+        <a asp-controller="Reports" asp-action="SalesReport"
+           class="@(isSalesReport ? "active" : "")">
+            <i class="fa-solid fa-calendar-days"></i> Sales Report
+        </a>
+        <a asp-controller="Reports" asp-action="ProductSales"
+           class="@(isProductSales ? "active" : "")">
+            <i class="fa-solid fa-chart-simple"></i> Product Sales
+        </a>
+        <a asp-controller="Reports" asp-action="TopSelling"
+           class="@(isTopSelling ? "active" : "")">
+            <i class="fa-solid fa-ranking-star"></i> Top Selling
+        </a>
+        <a asp-controller="Reports" asp-action="StockReport"
+           class="@(isStockReport ? "active" : "")">
+            <i class="fa-solid fa-warehouse"></i> Stock Report
+        </a>
+
+        <div class="menu-title">Settings</div>
+        <a asp-controller="Settings" asp-action="Index"
+           class="@(isBusinessSettings ? "active" : "")">
+            <i class="fa-solid fa-store"></i> Business Settings
+        </a>
+        <a asp-controller="ReceiptSettings" asp-action="Index"
+           class="@(isReceiptSettings ? "active" : "")">
+            <i class="fa-solid fa-print"></i> Receipt Settings
+        </a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Users" asp-action="Index"
+               class="@(isUsers ? "active" : "")">
+                <i class="fa-solid fa-user-shield"></i> Users
+            </a>
+        }
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="ErrorLogs" asp-action="Index"
+               class="@(isErrorLogs ? "active" : "")">
+                <i class="fa-solid fa-bug"></i> Error Logs
+            </a>
+        }
+
+    </div>
+
+</aside>

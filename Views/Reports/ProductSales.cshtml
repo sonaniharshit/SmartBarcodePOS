@@ -1,0 +1,35 @@
+@model List<SalesBillItem>
+@{
+    ViewData["Title"] = "Product Sales Report";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Product Sales Report</h5>
+        <small class="text-muted">Last 100 sold product items.</small>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Product?.ProductName</td>
+                        <td>@item.Qty</td>
+                        <td>&#8377;@item.Price</td>
+                        <td>&#8377;@item.Total</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

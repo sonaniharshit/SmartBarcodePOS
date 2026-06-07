@@ -1,0 +1,124 @@
+@model LoginViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Admin Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Admin Login - Smart Barcode POS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet">
+    <link href="~/lib/toastr.js/toastr.min.css" rel="stylesheet">
+    <link href="~/css/auth.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body class="auth-body">
+    <div class="login-shell">
+        <section class="login-left">
+            <div class="brand-row">
+                <div class="brand-icon"><i class="fa-solid fa-barcode"></i></div>
+                <div>
+                    <h3>Smart Barcode POS</h3>
+                    <small>Professional Retail Billing System</small>
+                </div>
+            </div>
+
+            <div class="hero-content">
+                <h1>Fast billing, barcode scanning and inventory control.</h1>
+                <p>Manage products, scan barcodes, generate bills, track stock and monitor business sales from one modern POS dashboard.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card"><i class="fa-solid fa-cash-register"></i><b>POS Billing</b><small>Quick barcode billing counter</small></div>
+                    <div class="feature-card"><i class="fa-solid fa-boxes-stacked"></i><b>Inventory</b><small>Track stock and low stock alerts</small></div>
+                    <div class="feature-card"><i class="fa-solid fa-barcode"></i><b>Barcode Labels</b><small>Generate and print product barcodes</small></div>
+                    <div class="feature-card"><i class="fa-solid fa-chart-line"></i><b>Reports</b><small>Sales and product performance</small></div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="login-right">
+            <div class="login-card">
+                <div class="login-card-header">
+                    <div class="login-logo"><i class="fa-solid fa-lock"></i></div>
+                    <h4>Welcome Back</h4>
+                    <p>Login to manage your billing counter</p>
+                </div>
+
+                <form asp-action="Login" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                            <input asp-for="Email" class="form-control" placeholder="Enter admin email" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label asp-for="Password" class="form-label">Password <span class="text-danger">*</span></label>
+                        <div class="input-wrap password-field-wrap">
+                            <i class="fa-solid fa-key input-icon"></i>
+                            <input asp-for="Password" id="password" class="form-control password-input" placeholder="Enter password" />
+                            <button type="button" class="password-eye-btn" onclick="togglePassword('password','eyeIcon')">
+                                <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="login-options">
+                        <div class="form-check">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label"></label>
+                        </div>
+                        <a asp-action="ForgotPassword" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-login w-100">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>Login
+                    </button>
+                </form>
+
+                <div class="login-footer">© 2026 Smart Barcode POS. All rights reserved.</div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function togglePassword(inputId, iconId){
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if(input.type === 'password'){
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }else{
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+
+    @if (TempData["Success"] != null)
+    {
+        <script>toastr.success('@TempData["Success"]');</script>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <script>toastr.error('@TempData["Error"]');</script>
+    }
+</body>
+</html>

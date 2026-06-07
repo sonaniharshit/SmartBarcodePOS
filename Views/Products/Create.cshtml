@@ -1,0 +1,122 @@
+@model ProductViewModel
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Add Product</h5>
+        <small class="text-muted">First select brand, then select category for that brand.</small>
+    </div>
+
+    <div class="card-body p-4">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label asp-for="ProductName" class="form-label">Product Name <span class="text-danger">*</span></label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="SKU" class="form-label">Product Code</label>
+                    <input asp-for="SKU" class="form-control" readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="BrandId" class="form-label">Brand <span class="text-danger">*</span></label>
+                    <select asp-for="BrandId" asp-items="Model.Brands"
+                            class="form-select" id="BrandId">
+                        <option value="">Select Brand</option>
+                    </select>
+                    <span asp-validation-for="BrandId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="CategoryId" class="form-label">Category <span class="text-danger">*</span></label>
+                    <select asp-for="CategoryId" asp-items="Model.Categories"
+                            class="form-select" id="CategoryId">
+                        <option value="">Select Category</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="IsActive" class="form-label">Status</label>
+                    <select asp-for="IsActive" class="form-select">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Price" class="form-label">Selling Price <span class="text-danger">*</span></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="CostPrice" class="form-label"></label>
+                    <input asp-for="CostPrice" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="StockQty" class="form-label">Stock Quantity <span class="text-danger">*</span></label>
+                    <input asp-for="StockQty" class="form-control" />
+                    <span asp-validation-for="StockQty" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="MinimumStockAlert" class="form-label">Minimum Stock Alert <span class="text-danger">*</span></label>
+                    <input asp-for="MinimumStockAlert" class="form-control" />
+                    <span asp-validation-for="MinimumStockAlert" class="text-danger small"></span>
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+                <button class="btn btn-success px-4">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Save & Generate Barcode
+                </button>
+                <a asp-action="Index" class="btn btn-light">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+
+            $('#BrandId').on('change', function () {
+
+                const brandId          = $(this).val();
+                const categoryDropdown = $('#CategoryId');
+
+                categoryDropdown.empty();
+                categoryDropdown.append('<option value="">Select Category</option>');
+
+                if (!brandId) return;
+
+                $.get('/Products/GetCategoriesByBrand', { brandId: brandId }, function (categories) {
+                    $.each(categories, function (index, item) {
+                        categoryDropdown.append(`<option value="${item.id}">${item.name}</option>`);
+                    });
+                });
+
+            });
+
+        });
+    </script>
+}

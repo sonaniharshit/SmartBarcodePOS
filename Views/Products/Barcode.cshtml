@@ -1,0 +1,60 @@
+@model Product
+@{
+    ViewData["Title"] = "Barcode Print";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Barcode Sticker</h5>
+        <small class="text-muted">Print, download and stick on product.</small>
+    </div>
+
+    <div class="card-body p-4">
+        <div id="barcodePrintArea" class="barcode-sticker barcode-label-download">
+            <div class="barcode-product-name">@Model.ProductName</div>
+
+            <img src="@Model.BarcodeImage"
+                 class="barcode-label-img"
+                 alt="@Model.SKU Barcode" />
+
+            <div class="barcode-product-sku">@Model.SKU</div>
+
+            <div class="barcode-product-price">
+                ₹@Model.Price.ToString("N2")
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex flex-wrap gap-2">
+            <button type="button" onclick="window.print()" class="btn btn-primary">
+                <i class="fa-solid fa-print me-1"></i> Print
+            </button>
+
+            <button type="button" id="btnDownloadBarcodeLabel" class="btn btn-success">
+                <i class="fa-solid fa-download me-1"></i> Download
+            </button>
+
+            <a asp-action="Index" class="btn btn-light">Back</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/html2canvas/html2canvas.min.js"></script>
+
+    <script>
+        document.getElementById('btnDownloadBarcodeLabel').addEventListener('click', function () {
+            const sticker = document.getElementById('barcodePrintArea');
+
+            html2canvas(sticker, {
+                backgroundColor: '#ffffff',
+                scale: 3,
+                useCORS: true
+            }).then(function (canvas) {
+                const link = document.createElement('a');
+                link.download = '@Model.SKU-label.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        });
+    </script>
+}

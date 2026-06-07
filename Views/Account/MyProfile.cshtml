@@ -1,0 +1,110 @@
+@model MyProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+    var initial = string.IsNullOrWhiteSpace(Model.FullName)
+        ? (string.IsNullOrWhiteSpace(Model.Email) ? "U" : Model.Email.Substring(0, 1).ToUpper())
+        : Model.FullName.Substring(0, 1).ToUpper();
+}
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="profile-card">
+            <div class="profile-avatar-lg">@initial</div>
+            <h5 class="fw-bold mb-1">@Model.FullName</h5>
+            <div class="text-muted mb-3">@Model.Email</div>
+
+            <span class="profile-role-badge">
+                <i class="fa-solid fa-user-shield me-1"></i>@Model.RoleName
+            </span>
+
+            <hr class="my-4" />
+
+            <div class="profile-info-row">
+                <span><i class="fa-solid fa-user me-2"></i>Full Name</span>
+                <b>@Model.FullName</b>
+            </div>
+
+            <div class="profile-info-row">
+                <span><i class="fa-solid fa-envelope me-2"></i>Email</span>
+                <b>@Model.Email</b>
+            </div>
+
+            <div class="profile-info-row">
+                <span><i class="fa-solid fa-phone me-2"></i>Phone</span>
+                <b>@(string.IsNullOrWhiteSpace(Model.PhoneNumber) ? "-" : Model.PhoneNumber)</b>
+            </div>
+
+            <div class="profile-info-row">
+                <span><i class="fa-solid fa-lock me-2"></i>Access Role</span>
+                <b>@Model.RoleName</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h5 class="fw-bold mb-0">Change Password</h5>
+                <small class="text-muted">Update your account password securely.</small>
+            </div>
+
+            <div class="card-body p-4">
+                <form asp-action="MyProfile" method="post" class="row g-3">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+
+                    <div class="col-md-12">
+                        <label asp-for="CurrentPassword" class="form-label">Current Password <span class="text-danger">*</span></label>
+                        <div class="password-field-wrap">
+                            <input asp-for="CurrentPassword" id="currentPassword" class="form-control" placeholder="Enter current password" />
+                            <button type="button" class="password-eye-btn" onclick="togglePassword('currentPassword','currentEye')">
+                                <i class="fa-solid fa-eye" id="currentEye"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="CurrentPassword" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="NewPassword" class="form-label">New Password <span class="text-danger">*</span></label>
+                        <div class="password-field-wrap">
+                            <input asp-for="NewPassword" id="newPassword" class="form-control" placeholder="Enter new password" />
+                            <button type="button" class="password-eye-btn" onclick="togglePassword('newPassword','newEye')">
+                                <i class="fa-solid fa-eye" id="newEye"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="NewPassword" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ConfirmPassword" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                        <div class="password-field-wrap">
+                            <input asp-for="ConfirmPassword" id="confirmPassword" class="form-control" placeholder="Confirm new password" />
+                            <button type="button" class="password-eye-btn" onclick="togglePassword('confirmPassword','confirmEye')">
+                                <i class="fa-solid fa-eye" id="confirmEye"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <button class="btn btn-success px-4">
+                            <i class="fa-solid fa-key me-1"></i> Change Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function togglePassword(inputId, iconId){
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if(input.type === 'password'){ input.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+            else{ input.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+        }
+    </script>
+}

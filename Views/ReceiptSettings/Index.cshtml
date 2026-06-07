@@ -1,0 +1,39 @@
+@model ReceiptSettingViewModel
+@{
+    ViewData["Title"] = "Receipt Settings";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Receipt Settings</h5>
+        <small class="text-muted">Configure receipt print size and footer message.</small>
+    </div>
+    <div class="card-body p-4">
+        <form asp-action="Index" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label asp-for="FooterMessage" class="form-label">Receipt Footer Message <span class="text-danger">*</span></label>
+                <input asp-for="FooterMessage" class="form-control" />
+                <span asp-validation-for="FooterMessage" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PrintSize" class="form-label">Print Size <span class="text-danger">*</span></label>
+                <select asp-for="PrintSize" class="form-select">
+                    <option value="80mm">80mm Thermal</option>
+                    <option value="58mm">58mm Thermal</option>
+                    <option value="A4">A4 Invoice</option>
+                </select>
+            </div>
+
+            <button class="btn btn-success px-4">
+                <i class="fa-solid fa-floppy-disk me-1"></i> Save Receipt Settings
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

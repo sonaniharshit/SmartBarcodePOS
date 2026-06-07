@@ -1,0 +1,111 @@
+@model SmartBarcodePOS_Pro.ViewModels.SalesReportViewModel
+@{
+    ViewData["Title"] = "Sales Report";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Sales Report</h5>
+        <small class="text-muted">View today's and this month's sales in one place.</small>
+    </div>
+
+    <div class="card-body p-4">
+
+        @*  Tab Switcher  *@
+        <ul class="nav nav-pills mb-4" id="salesTab">
+            <li class="nav-item">
+                <button class="nav-link active" id="tab-daily" data-bs-toggle="pill"
+                        data-bs-target="#panel-daily" type="button">
+                    <i class="fa-solid fa-calendar-day me-1"></i> Daily Sales
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="tab-monthly" data-bs-toggle="pill"
+                        data-bs-target="#panel-monthly" type="button">
+                    <i class="fa-solid fa-calendar-days me-1"></i> Monthly Sales
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            @*  Daily Sales Panel  *@
+            <div class="tab-pane fade show active" id="panel-daily">
+                <h6 class="fw-bold mb-3 text-muted">
+                    Today's Total:
+                    <span class="text-dark">&#8377;@Model.DailyTotal.ToString("0.00")</span>
+                </h6>
+                <div class="table-responsive">
+                    <table class="table table-hover datatable" id="tbl-daily">
+                        <thead>
+                            <tr>
+                                <th>Bill No</th>
+                                <th>Date &amp; Time</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.DailyBills.Any())
+                            {
+                                foreach (var item in Model.DailyBills)
+                                {
+                                    <tr>
+                                        <td>@item.BillNo</td>
+                                        <td>@item.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</td>
+                                        <td>&#8377;@item.TotalAmount.ToString("0.00")</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @*  Monthly Sales Panel  *@
+            <div class="tab-pane fade" id="panel-monthly">
+                <h6 class="fw-bold mb-3 text-muted">
+                    This Month's Total:
+                    <span class="text-dark">&#8377;@Model.MonthlyTotal.ToString("0.00")</span>
+                </h6>
+                <div class="table-responsive">
+                    <table class="table table-hover datatable" id="tbl-monthly">
+                        <thead>
+                            <tr>
+                                <th>Bill No</th>
+                                <th>Date &amp; Time</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.MonthlyBills.Any())
+                            {
+                                foreach (var item in Model.MonthlyBills)
+                                {
+                                    <tr>
+                                        <td>@item.BillNo</td>
+                                        <td>@item.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</td>
+                                        <td>&#8377;@item.TotalAmount.ToString("0.00")</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Re-initialize DataTables when a tab becomes visible,
+        // because hidden tables don't calculate column widths correctly.
+        document.querySelectorAll('#salesTab button[data-bs-toggle="pill"]').forEach(function (btn) {
+            btn.addEventListener('shown.bs.tab', function () {
+                initializeDataTables();
+            });
+        });
+    </script>
+}

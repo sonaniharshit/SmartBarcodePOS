@@ -1,0 +1,48 @@
+@model List<Product>
+@{
+    ViewData["Title"] = "Low Stock";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Low Stock Products</h5>
+        <small class="text-muted">Products where stock quantity is below minimum alert.</small>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Current Stock</th>
+                    <th>Minimum Alert</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.SKU</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Category?.CategoryName</td>
+                        <td>
+                            <span class="badge badge-soft-danger">@item.StockQty</span>
+                        </td>
+                        <td>@item.MinimumStockAlert</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">No low stock products.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+@{
+    ViewData["Title"] = "POS Billing";
+}
+
+<div class="pos-wrapper-pro">
+
+    <div class="pos-main-grid-pro">
+
+        @* LEFT AREA: Scanner + Cart *@
+        <div class="left-area-pro">
+
+            @* Scan / Search Card *@
+            <div class="pos-ui-card scan-card-pro">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <div>
+                        <h5 class="fw-bold mb-0">Scan / Search Product</h5>
+                        <small class="text-muted">Scan barcode or type SKU manually</small>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-outline-primary rounded-pill px-4" id="btnStartScanner">
+                            <i class="fa-solid fa-camera me-2"></i>Open Camera
+                        </button>
+                        <button class="btn btn-outline-danger rounded-pill px-4" id="btnStopScanner">
+                            <i class="fa-solid fa-stop me-2"></i>Stop
+                        </button>
+                    </div>
+                </div>
+
+                @* Camera Reader *@
+                <div id="reader" class="camera-reader-pro mb-3">
+                    <div>
+                        <i class="fa-solid fa-camera fa-2x mb-2"></i>
+                        <h6 class="fw-bold mb-1">Camera Scanner</h6>
+                        <small>Click Open Camera to scan barcode</small>
+                    </div>
+                </div>
+
+                @* Manual SKU Input Row *@
+                <div class="scan-row-pro">
+                    <input id="manualSku"
+                           class="form-control scan-input-pro"
+                           placeholder="Scan or enter product code" />
+                    <button id="btnFindProduct" class="btn btn-dark btn-pos-pro">
+                        <i class="fa-solid fa-magnifying-glass me-2"></i>Find
+                    </button>
+                    <button id="btnAddToCart" class="btn btn-success btn-pos-pro">
+                        <i class="fa-solid fa-cart-plus me-2"></i>Add Item
+                    </button>
+                </div>
+
+                @* Product Preview Strip *@
+                <div class="product-strip-pro d-none" id="productPreview">
+                    <div class="product-img-pro">
+                        <i class="fa-solid fa-box"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1" id="previewName"></h5>
+                        <div class="text-muted">
+                            SKU: <b id="previewSku"></b>
+                            <span class="mx-1">&#8226;</span>
+                            Category: <b id="previewCategory"></b>
+                        </div>
+                        <span class="stock-pill-pro mt-2">
+                            Available Stock: <span id="previewStock"></span>
+                        </span>
+                    </div>
+                    <div class="text-end">
+                        <small class="text-muted">Selling Price</small>
+                        <div class="price-big-pro">&#8377;<span id="previewPrice"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            @* Cart Items Card *@
+            <div class="pos-ui-card cart-card-pro">
+                <div class="cart-title-pro">
+                    <div>
+                        <h5>Cart Items</h5>
+                        <small class="text-muted">Customer billing items</small>
+                    </div>
+                    <button id="btnClearCart" class="btn btn-outline-danger rounded-pill px-4">
+                        <i class="fa-solid fa-trash me-2"></i>Clear Cart
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table cart-table-pro">
+                        <thead>
+                            <tr>
+                                <th style="width: 34%;">Product</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartBody">
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    No item added
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        @* RIGHT AREA: Bill Summary *@
+        <aside class="pos-ui-card summary-card-pro">
+
+            <h5 class="summary-title-pro">Bill Summary</h5>
+            <small class="text-muted">Discount based simple billing</small>
+
+            @* Item & Qty Counters *@
+            <div class="mini-stat-pro">
+                <div>
+                    <small>Total Items</small>
+                    <b id="totalItems">0</b>
+                </div>
+                <div>
+                    <small>Total Qty</small>
+                    <b id="totalQty">0</b>
+                </div>
+            </div>
+
+            @* Discount Input *@
+            <div class="discount-box-pro">
+                <label class="form-label fw-bold">Discount %</label>
+                <input id="discountPercent"
+                       type="number"
+                       class="form-control discount-input-pro"
+                       value="0"
+                       min="0"
+                       max="100"
+                       step="0.01" />
+                <small class="text-muted">Example: 10 means 10% discount</small>
+            </div>
+
+            @* Totals Box *@
+            <div class="bill-box-pro">
+                <div class="bill-row-pro">
+                    <span>Subtotal</span>
+                    <b id="subTotal">&#8377;0.00</b>
+                </div>
+                <div class="bill-row-pro">
+                    <span>Discount</span>
+                    <b id="discountAmountDisplay">&#8377;0.00</b>
+                </div>
+                <div class="bill-row-pro grand-total-pro">
+                    <span>Grand Total</span>
+                    <h1 id="grandTotal">&#8377;0.00</h1>
+                </div>
+            </div>
+
+            @* Action Buttons *@
+            <div class="action-buttons-pro">
+                <button id="btnGenerateBill" class="btn btn-success btn-print-pro">
+                    <i class="fa-solid fa-print me-2"></i>Generate & Print Bill
+                </button>
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/lib/html5-qrcode/html5-qrcode.min.js"></script>
+    <script src="~/js/pos.js" asp-append-version="true"></script>
+}

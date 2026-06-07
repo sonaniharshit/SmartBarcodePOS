@@ -1,0 +1,1629 @@
+/* ============================================================
+   SMART BARCODE POS PRO - MAIN STYLESHEET
+   Author: Smart POS Team
+   Version: 1.0
+   ============================================================ */
+
+
+:root {
+    /* Sidebar Colors */
+    --sidebar: #0b1f3a;
+    --sidebar2: #102b52;
+    /* Layout Colors */
+    --bg: #f3f6fb;
+    --border: #e5e7eb;
+    /* Brand Colors */
+    --pro-bg: #f3f6fb;
+    --pro-blue: #2563eb;
+    --pro-green: #16a34a;
+    --pro-red: #ef4444;
+    --pro-orange: #f97316;
+    --pro-purple: #7c3aed;
+    /* Typography Colors */
+    --pro-text: #0f172a;
+    --pro-muted: #64748b;
+    --pro-line: #e5e7eb;
+}
+
+body {
+    background: var(--bg);
+    font-family: Segoe UI, Arial, sans-serif;
+    color: #1f2937;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 270px;
+    background: linear-gradient(180deg, var(--sidebar), var(--sidebar2));
+    color: white;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    scroll-behavior: auto;
+    z-index: 1000;
+}
+
+/* Brand / Logo Area */
+.brand {
+    padding: 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+    .brand h4 {
+        margin: 0;
+        font-weight: 800;
+        font-size: 20px;
+    }
+
+    .brand small {
+        color: #b7c6dc;
+    }
+
+/* Navigation Menu */
+.menu {
+    padding: 16px 12px;
+}
+
+    .menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #d9e6f7;
+        text-decoration: none;
+        padding: 12px 14px;
+        border-radius: 12px;
+        margin-bottom: 6px;
+        transition: 0.2s;
+    }
+
+        .menu a:hover,
+        .menu a.active {
+            background: rgba(255, 255, 255, 0.13);
+            color: white;
+        }
+
+.menu-title {
+    color: #92a8c7;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 14px 14px 6px;
+    letter-spacing: 0.08em;
+    margin-top: 10px;
+}
+
+/* Disabled Menu State */
+.disabled-menu {
+    opacity: 0.55;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+.main {
+    margin-left: 270px;
+    width: calc(100% - 270px);
+}
+
+/* Top Navigation Bar */
+.topbar {
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 500;
+}
+
+/* Page Content Wrapper */
+.content {
+    padding: 24px;
+}
+
+.card {
+    border: 0;
+    border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
+}
+
+/* Pro UI Card (used across dashboard & POS) */
+.pos-ui-card {
+    background: #fff;
+    border-radius: 24px;
+    border: 0;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+.stat-card h3 {
+    font-weight: 800;
+    margin: 0;
+}
+
+.stat-card small {
+    color: #6b7280;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: white;
+}
+
+/* Pro Stat Card */
+.stat-card-pro {
+    padding: 22px;
+    min-height: 130px;
+    overflow: hidden;
+}
+
+    .stat-card-pro small {
+        color: var(--pro-muted);
+        font-weight: 700;
+    }
+
+    .stat-card-pro h2 {
+        font-weight: 900;
+        margin-top: 10px;
+        font-size: 30px;
+    }
+
+/* Icon Bubble */
+.icon-bubble {
+    width: 54px;
+    height: 54px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 22px;
+    flex: 0 0 auto;
+}
+
+.bg-blue {
+    background: var(--pro-blue) !important;
+}
+
+.bg-green {
+    background: var(--pro-green) !important;
+}
+
+.bg-orange {
+    background: var(--pro-orange) !important;
+}
+
+.bg-red {
+    background: var(--pro-red) !important;
+}
+
+.bg-purple {
+    background: var(--pro-purple) !important;
+}
+
+.badge-soft-success {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.badge-soft-danger {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* POS Pro Badge */
+.pos-badge {
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.soft-red {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.soft-green {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.soft-blue {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.btn,
+.form-control,
+.form-select {
+    border-radius: 10px;
+}
+
+.form-control,
+.form-select {
+    min-height: 44px;
+}
+
+/* Required Field Star */
+.required-star {
+    color: #dc3545;
+    font-weight: 700;
+    margin-left: 3px;
+}
+
+/* Quick Action Button */
+.quick-action-pro {
+    padding: 20px;
+    border: 1px solid var(--pro-line);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--pro-text);
+    background: #fff;
+    transition: 0.2s ease;
+    min-height: 92px;
+}
+
+    .quick-action-pro:hover {
+        border-color: #bfdbfe;
+        background: #f8fbff;
+        color: var(--pro-text);
+        transform: translateY(-2px);
+    }
+
+/* Business Summary Row */
+.summary-row-light {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--pro-line);
+}
+
+    .summary-row-light small {
+        color: var(--pro-muted);
+    }
+
+/* POS Workflow Steps */
+.workflow-line {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.workflow-step {
+    border: 1px solid var(--pro-line);
+    border-radius: 20px;
+    padding: 18px;
+    background: #f8fafc;
+}
+
+    .workflow-step span {
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        margin-bottom: 10px;
+    }
+
+    .workflow-step b {
+        display: block;
+    }
+
+    .workflow-step small {
+        color: var(--pro-muted);
+    }
+
+.pos-wrapper-pro {
+    padding: 0;
+}
+
+/* POS Page Header */
+.pos-header-pro {
+    background: #fff;
+    border-radius: 24px;
+    padding: 18px 22px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+    .pos-header-pro h3 {
+        font-weight: 900;
+        margin: 0;
+    }
+
+    .pos-header-pro small {
+        color: var(--pro-muted);
+    }
+
+.counter-badge {
+    background: #dbeafe;
+    color: #1d4ed8;
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* POS Two-Column Grid */
+.pos-main-grid-pro {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 20px;
+}
+
+/* Left Area Stack */
+.left-area-pro {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Scan Card */
+.scan-card-pro {
+    padding: 18px;
+}
+
+/* Camera Reader Box */
+.camera-reader-pro {
+    min-height: 170px;
+    border: 2px dashed #93c5fd;
+    background: #eff6ff;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #1d4ed8;
+    overflow: hidden;
+}
+
+/* Scan Input Row */
+.scan-row-pro {
+    display: grid;
+    grid-template-columns: 1fr 170px 170px;
+    gap: 12px;
+}
+
+.scan-input-pro {
+    height: 56px;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.btn-pos-pro {
+    height: 56px;
+    border-radius: 16px;
+    font-weight: 900;
+}
+
+/* Shortcut Bar */
+.shortcut-bar-pro {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.shortcut-pro {
+    background: #fff;
+    border: 1px solid var(--pro-line);
+    border-radius: 999px;
+    padding: 9px 14px;
+    font-size: 13px;
+    color: #475569;
+    font-weight: 700;
+}
+
+/* Product Preview Strip */
+.product-strip-pro {
+    display: grid;
+    grid-template-columns: 110px 1fr 180px;
+    gap: 16px;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid var(--pro-line);
+    border-radius: 20px;
+    padding: 14px;
+    margin-top: 16px;
+}
+
+.product-img-pro {
+    width: 90px;
+    height: 90px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #dbeafe, #eff6ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2563eb;
+    font-size: 34px;
+}
+
+.stock-pill-pro {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: #dcfce7;
+    color: #166534;
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.price-big-pro {
+    font-size: 28px;
+    font-weight: 900;
+    color: #111827;
+}
+
+.cart-table input {
+    width: 70px;
+    text-align: center;
+}
+
+/* Cart Card */
+.cart-card-pro {
+    padding: 18px;
+}
+
+.cart-title-pro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+    .cart-title-pro h5 {
+        font-weight: 900;
+        margin: 0;
+    }
+
+/* Cart Pro Table */
+.cart-table-pro {
+    margin: 0;
+}
+
+    .cart-table-pro th {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #64748b;
+        background: #f8fafc;
+        padding: 14px;
+    }
+
+    .cart-table-pro td {
+        vertical-align: middle;
+        padding: 14px;
+    }
+
+/* Item Name & Code */
+.item-name {
+    font-weight: 900;
+}
+
+.item-code {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* Quantity Control */
+.qty-control {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--pro-line);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+    .qty-control button {
+        width: 34px;
+        height: 34px;
+        border: 0;
+        background: #f8fafc;
+        font-weight: 900;
+    }
+
+    .qty-control span {
+        min-width: 38px;
+        text-align: center;
+        font-weight: 900;
+    }
+
+/* Remove Button */
+.remove-btn {
+    border: 0;
+    background: #fee2e2;
+    color: #b91c1c;
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+}
+
+.summary-card-pro {
+    padding: 20px;
+    position: sticky;
+    top: 90px;
+    height: max-content;
+}
+
+.summary-title-pro {
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+/* Mini Stat Grid */
+.mini-stat-pro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+    .mini-stat-pro div {
+        background: #f8fafc;
+        border: 1px solid var(--pro-line);
+        border-radius: 18px;
+        padding: 14px;
+    }
+
+    .mini-stat-pro small {
+        color: #64748b;
+    }
+
+    .mini-stat-pro b {
+        display: block;
+        font-size: 20px;
+    }
+
+/* Discount Box */
+.discount-box-pro {
+    background: #f8fafc;
+    border: 1px solid var(--pro-line);
+    border-radius: 18px;
+    padding: 14px;
+    margin-top: 16px;
+}
+
+.discount-input-pro {
+    height: 50px;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+/* Totals Box */
+.total-box {
+    background: #0f172a;
+    color: white;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.bill-box-pro {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    color: #fff;
+    border-radius: 24px;
+    padding: 22px;
+    margin-top: 16px;
+}
+
+.bill-row-pro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+    .bill-row-pro span {
+        color: #bfdbfe;
+    }
+
+.grand-total-pro {
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+    padding-top: 16px;
+    margin-top: 16px;
+}
+
+    .grand-total-pro h1 {
+        font-size: 34px;
+        font-weight: 1000;
+        margin: 0;
+    }
+
+/* Action Buttons */
+.action-buttons-pro {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.btn-print-pro {
+    height: 58px;
+    border-radius: 18px;
+    font-weight: 900;
+    font-size: 17px;
+}
+
+.barcode-sticker {
+    border: 1px dashed #111827;
+    width: 340px;
+    max-width: 100%;
+    padding: 18px;
+    border-radius: 12px;
+    background: white;
+    text-align: center;
+}
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0b1f3a, #2563eb);
+}
+
+.login-card {
+    width: 420px;
+    max-width: 92%;
+    background: white;
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.25);
+}
+
+.login-logo {
+    width: 70px;
+    height: 70px;
+    margin: auto;
+    border-radius: 20px;
+    background: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
+
+.receipt-preview {
+    max-width: 340px;
+    margin: auto;
+    border: 1px dashed #999;
+    border-radius: 14px;
+    padding: 18px;
+    background: #fff;
+    font-size: 14px;
+}
+
+/* Scanner Box (old style) */
+.scanner-box {
+    border: 2px dashed #94a3b8;
+    border-radius: 18px;
+    min-height: 260px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #64748b;
+    overflow: hidden;
+}
+
+/* Product Preview (old style) */
+.product-preview {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 16px;
+    background: white;
+}
+
+.mobile-menu {
+    display: none;
+}
+
+table.dataTable th,
+table.dataTable td,
+table.table th,
+table.table td {
+    text-align: left !important;
+    vertical-align: middle;
+}
+
+
+table.dataTable tbody td.dataTables_empty,
+table.dataTable tbody td.dt-empty {
+    text-align: center !important;
+    padding: 18px !important;
+    color: #64748b;
+    font-weight: 500;
+}
+
+table.dataTable th {
+    font-weight: 700;
+}
+
+table.dataTable {
+    width: 100% !important;
+}
+
+    /* Keep action buttons on one line */
+    table.dataTable td:last-child {
+        white-space: nowrap;
+    }
+
+
+/* POS Grid: stacks at 1100px */
+@media (max-width: 1100px) {
+    .pos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pos-main-grid-pro {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card-pro {
+        position: static;
+    }
+
+    .scan-row-pro {
+        grid-template-columns: 1fr;
+    }
+
+    .product-strip-pro {
+        grid-template-columns: 1fr;
+    }
+
+    .pos-header-pro {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .workflow-line {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Sidebar collapses at 991px */
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: 0.2s;
+    }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .mobile-menu {
+        display: inline-flex;
+    }
+
+    .content {
+        padding: 16px;
+    }
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #barcodePrintArea,
+    #barcodePrintArea * {
+        visibility: visible;
+    }
+
+    #barcodePrintArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        box-shadow: none;
+    }
+}
+
+/* MOBILE SIDEBAR CLOSE + OVERLAY */
+.sidebar-overlay {
+    display: none;
+}
+
+.sidebar-brand-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.sidebar-close-btn {
+    display: none;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 12px;
+    background: rgba(255,255,255,.12);
+    color: #fff;
+    font-size: 18px;
+}
+
+body.sidebar-open {
+    overflow: hidden;
+}
+
+@media(max-width:991px) {
+    .sidebar-close-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(15,23,42,.55);
+        backdrop-filter: blur(2px);
+        z-index: 999;
+    }
+
+    .sidebar.show {
+        box-shadow: 18px 0 45px rgba(0,0,0,.35);
+    }
+}
+
+/* BARCODE SCANNER LOADER / ACTIVE STATE */
+.camera-reader-pro,
+.scanner-box {
+    position: relative;
+}
+
+.scanner-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 150px;
+    text-align: center;
+}
+
+.scanner-spinner {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 5px solid #dbeafe;
+    border-top-color: #2563eb;
+    animation: scannerSpin .85s linear infinite;
+}
+
+@keyframes scannerSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#reader.scanner-loading {
+    border-color: #2563eb;
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+#reader.scanner-active {
+    border-color: #16a34a;
+    background: #020617;
+    color: #fff;
+    overflow: hidden;
+}
+
+    #reader.scanner-active video {
+        border-radius: 18px;
+    }
+
+.scanner-line {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    top: 20%;
+    border-radius: 999px;
+    background: linear-gradient(90deg,transparent,#22c55e,transparent);
+    box-shadow: 0 0 18px rgba(34,197,94,.9);
+    animation: scannerLine 1.5s ease-in-out infinite;
+    z-index: 5;
+}
+
+@keyframes scannerLine {
+    0% {
+        top: 18%;
+    }
+
+    50% {
+        top: 78%;
+    }
+
+    100% {
+        top: 18%;
+    }
+}
+
+.scanner-corners::before {
+    content: "Scanning...";
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    transform: translateX(-50%);
+    background: rgba(22,163,74,.95);
+    color: #fff;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 800;
+    z-index: 6;
+}
+
+#reader.scanner-success {
+    border-color: #16a34a;
+    background: #f0fdf4;
+    color: #166534;
+}
+
+
+/* Global 13px Font Size Update */
+html {
+    font-size: 13px !important;
+}
+
+body,
+button,
+input,
+select,
+textarea,
+.form-control,
+.form-select,
+.btn,
+.table,
+.dataTable,
+.nav-link,
+.dropdown-item {
+    font-size: 13px !important;
+}
+
+.menu a {
+    font-size: 13px !important;
+}
+
+label {
+    font-size: 13px !important;
+}
+
+.table th, .table td {
+    font-size: 13px !important;
+}
+
+small, .text-muted {
+    font-size: 12px !important;
+}
+
+h1 {
+    font-size: 26px !important;
+}
+
+h2 {
+    font-size: 22px !important;
+}
+
+h3 {
+    font-size: 20px !important;
+}
+
+h4 {
+    font-size: 17px !important;
+}
+
+h5 {
+    font-size: 15px !important;
+}
+
+h6 {
+    font-size: 13px !important;
+}
+
+.stat-card-pro h2 {
+    font-size: 26px !important;
+}
+
+.price-big-pro {
+    font-size: 26px !important;
+}
+
+
+/* Password Field Eye Button Style */
+.password-field-wrap {
+    position: relative;
+}
+
+    .password-field-wrap .form-control {
+        padding-right: 58px !important;
+        border-radius: 18px !important;
+        min-height: 50px;
+    }
+
+.password-eye-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 14px;
+    background: #f1f5f9;
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s ease;
+}
+
+    .password-eye-btn:hover {
+        background: #e2e8f0;
+        color: #1d4ed8;
+    }
+
+
+/* Topbar User Dropdown + My Profile Page */
+.user-profile-dropdown {
+    position: relative;
+}
+
+.user-profile-btn {
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 999px;
+    padding: 6px 10px 6px 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 190px;
+    box-shadow: 0 8px 24px rgba(15,23,42,.06);
+}
+
+.user-avatar-sm,
+.user-avatar-md,
+.profile-avatar-lg {
+    background: #2563eb;
+    color: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex: 0 0 auto;
+}
+
+.user-avatar-sm {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+}
+
+.user-avatar-md {
+    width: 42px;
+    height: 42px;
+    font-size: 17px;
+}
+
+.user-profile-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+    min-width: 0;
+}
+
+    .user-profile-text b {
+        font-size: 13px;
+        color: #0f172a;
+    }
+
+    .user-profile-text small {
+        font-size: 11px !important;
+        color: #64748b;
+        max-width: 112px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.user-profile-chevron {
+    color: #94a3b8;
+    font-size: 11px;
+    margin-left: auto;
+}
+
+.user-dropdown-menu {
+    border: 0;
+    border-radius: 18px;
+    padding: 10px;
+    min-width: 245px;
+    box-shadow: 0 22px 55px rgba(15,23,42,.16);
+}
+
+.user-dropdown-head {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 14px;
+    background: #f8fafc;
+    margin-bottom: 8px;
+}
+
+    .user-dropdown-head b {
+        display: block;
+        font-size: 13px;
+    }
+
+    .user-dropdown-head small {
+        display: block;
+        color: #64748b;
+        font-size: 12px !important;
+        max-width: 155px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.user-dropdown-menu .dropdown-item {
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.profile-card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 12px 32px rgba(15,23,42,.08);
+    padding: 28px;
+    text-align: center;
+}
+
+.profile-avatar-lg {
+    width: 86px;
+    height: 86px;
+    font-size: 34px;
+    margin: 0 auto 16px;
+    box-shadow: 0 18px 42px rgba(37,99,235,.28);
+}
+
+.profile-role-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #dbeafe;
+    color: #1d4ed8;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.profile-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 13px 0;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+    .profile-info-row:last-child {
+        border-bottom: 0;
+    }
+
+    .profile-info-row span {
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    .profile-info-row b {
+        color: #0f172a;
+        text-align: right;
+        word-break: break-word;
+    }
+
+@media(max-width:768px) {
+    .user-profile-btn {
+        min-width: auto;
+        padding: 6px;
+    }
+
+    .user-profile-text,
+    .user-profile-chevron {
+        display: none;
+    }
+
+    .topbar {
+        gap: 12px;
+    }
+}
+
+
+/* Barcode Sticker Download Label */
+.barcode-sticker,
+.barcode-label-download {
+    width: 360px;
+    max-width: 100%;
+    background: #fff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    color: #0f172a;
+}
+
+.barcode-product-name {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 10px;
+    word-break: break-word;
+}
+
+.barcode-label-img {
+    width: 100%;
+    max-width: 290px;
+    height: auto;
+    display: block;
+    margin: 0 auto 8px;
+}
+
+.barcode-product-sku {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    margin-top: 4px;
+}
+
+.barcode-product-price {
+    font-size: 15px;
+    font-weight: 800;
+    color: #16a34a;
+    margin-top: 4px;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #barcodePrintArea,
+    #barcodePrintArea * {
+        visibility: visible;
+    }
+
+    #barcodePrintArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        border: 0;
+        box-shadow: none;
+    }
+}
+
+
+/* Manual required field star */
+.required-star,
+.form-label .text-danger {
+    color: #dc2626 !important;
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+
+/* POS Mobile Cart Layout Fix */
+@media (max-width: 576px) {
+    .pos-wrapper-pro {
+        overflow-x: hidden;
+    }
+
+    .scan-card-pro,
+    .cart-card-pro,
+    .summary-card-pro {
+        padding: 14px;
+        border-radius: 18px;
+    }
+
+    .scan-row-pro {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .scan-input-pro,
+    .btn-pos-pro {
+        height: 48px;
+        font-size: 13px;
+        border-radius: 14px;
+    }
+
+    .product-strip-pro {
+        display: grid;
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .product-img-pro {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto;
+        font-size: 28px;
+    }
+
+    .product-strip-pro .text-end {
+        text-align: center !important;
+    }
+
+    .price-big-pro {
+        font-size: 24px !important;
+    }
+
+    .cart-title-pro {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+        .cart-title-pro #btnClearCart {
+            width: 100%;
+        }
+
+    .cart-card-pro .table-responsive {
+        overflow-x: visible;
+    }
+
+    .cart-table-pro {
+        border-collapse: separate;
+        border-spacing: 0 12px;
+    }
+
+        .cart-table-pro thead {
+            display: none;
+        }
+
+        .cart-table-pro,
+        .cart-table-pro tbody,
+        .cart-table-pro tr,
+        .cart-table-pro td {
+            display: block;
+            width: 100%;
+        }
+
+            .cart-table-pro tr.cart-mobile-row {
+                background: #f8fafc;
+                border: 1px solid #e5e7eb;
+                border-radius: 18px;
+                padding: 12px;
+                box-shadow: 0 8px 22px rgba(15,23,42,.06);
+            }
+
+            .cart-table-pro td {
+                padding: 9px 4px !important;
+                border: 0 !important;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 14px;
+                text-align: right !important;
+            }
+
+                .cart-table-pro td::before {
+                    content: attr(data-label);
+                    font-size: 12px;
+                    color: #64748b;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    text-align: left;
+                }
+
+                .cart-table-pro td:first-child {
+                    display: block;
+                    text-align: left !important;
+                    border-bottom: 1px solid #e5e7eb !important;
+                    padding-bottom: 12px !important;
+                    margin-bottom: 6px;
+                }
+
+                    .cart-table-pro td:first-child::before {
+                        display: none;
+                    }
+
+    .item-name {
+        font-size: 14px;
+        line-height: 1.3;
+    }
+
+    .item-code {
+        font-size: 12px;
+    }
+
+    .qty-control {
+        margin-left: auto;
+    }
+
+    .remove-btn {
+        margin-left: auto;
+    }
+
+    .mini-stat-pro {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .bill-box-pro {
+        padding: 16px;
+        border-radius: 18px;
+    }
+
+    .grand-total-pro h1 {
+        font-size: 26px;
+    }
+
+    .btn-print-pro {
+        height: 50px;
+        font-size: 13px;
+    }
+}
+
+
+/* POS Scanned Queue Before Add To Cart */
+.scanned-queue-pro {
+    margin-top: 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 14px;
+}
+
+.scanned-queue-list-pro {
+    display: grid;
+    gap: 8px;
+}
+
+.scanned-item-pro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 10px 12px;
+}
+
+    .scanned-item-pro b {
+        display: block;
+        font-size: 13px;
+        color: #0f172a;
+    }
+
+    .scanned-item-pro small {
+        display: block;
+        color: #64748b;
+        font-size: 12px !important;
+    }
+
+    .scanned-item-pro span {
+        background: #dcfce7;
+        color: #166534;
+        border-radius: 999px;
+        padding: 5px 10px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+@media(max-width:576px) {
+    .scanned-item-pro {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+/* === Compact POS Scanner Area === */
+.camera-reader-pro {
+    min-height: 120px !important;
+    max-height: 220px;
+    border-radius: 16px !important;
+}
+
+    .camera-reader-pro video {
+        max-height: 210px !important;
+        object-fit: cover;
+        border-radius: 14px;
+    }
+
+.scanner-state {
+    min-height: 110px !important;
+}
+
+.scanner-spinner {
+    width: 42px !important;
+    height: 42px !important;
+    border-width: 4px !important;
+}
+
+#reader.scanner-active {
+    min-height: 180px !important;
+}
+
+@media(max-width:576px) {
+    .camera-reader-pro {
+        min-height: 95px !important;
+        max-height: 150px !important;
+    }
+
+        .camera-reader-pro video {
+            max-height: 145px !important;
+        }
+
+    #reader.scanner-active {
+        min-height: 135px !important;
+    }
+
+    .scanner-state {
+        min-height: 90px !important;
+    }
+
+        .scanner-state .fa-camera,
+        .scanner-state .fa-circle-check {
+            font-size: 26px !important;
+        }
+
+    .camera-reader-pro h6 {
+        font-size: 13px;
+        margin-bottom: 2px !important;
+    }
+
+    .camera-reader-pro small {
+        font-size: 11px !important;
+    }
+}
+
+.scan-success {
+    border: 3px solid #22c55e !important;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}

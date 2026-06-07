@@ -1,0 +1,101 @@
+@model List<Product>
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="fw-bold mb-0">Product List</h5>
+            <small class="text-muted">Manage stock and barcode stickers.</small>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fa-solid fa-plus me-1"></i> Add Product
+        </a>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Barcode</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Any())
+            {
+                foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.SKU</td>
+                        <td>@p.ProductName</td>
+                        <td>@p.Category?.CategoryName</td>
+                        <td>@p.Brand?.BrandName</td>
+                        <td>&#8377;@p.Price</td>
+                        <td>
+                            @if (p.StockQty <= p.MinimumStockAlert)
+                            {
+                                <span class="badge badge-soft-danger">@p.StockQty Low</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-success">@p.StockQty</span>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge bg-dark">Code128</span>
+                        </td>
+                        <td>
+                            @if (p.IsActive)
+                            {
+                                <span class="badge badge-soft-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-danger">Inactive</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@p.ProductId"
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@p.ProductId"
+                               class="btn btn-sm btn-outline-success">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            <a asp-action="Barcode" asp-route-id="@p.ProductId"
+                               class="btn btn-sm btn-outline-dark">
+                                <i class="fa-solid fa-print"></i>
+                            </a>
+                            <form asp-action="Delete" asp-route-id="@p.ProductId"
+                                  method="post" class="d-inline delete-form">
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('.delete-form').on('submit', function (e) {
+            if (!confirm('Delete this product?')) e.preventDefault();
+        });
+    </script>
+}

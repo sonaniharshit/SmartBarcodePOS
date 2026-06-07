@@ -1,0 +1,36 @@
+@model List<SalesBill>
+@{
+    ViewData["Title"] = "Daily Sales Report";
+    var total = Model.Sum(x => x.TotalAmount);
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Daily Sales Report</h5>
+        <small class="text-muted">Today's sales summary.</small>
+    </div>
+
+    <div class="card-body table-responsive">
+        <h4 class="fw-bold mb-3">Total: &#8377;@total</h4>
+
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>Bill No</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.BillNo</td>
+                        <td>@item.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</td>
+                        <td>&#8377;@item.TotalAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

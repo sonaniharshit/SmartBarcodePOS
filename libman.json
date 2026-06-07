@@ -1,0 +1,46 @@
+{
+  "version": "3.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.7.1",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "bootstrap@5.3.3",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "font-awesome@6.5.2",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr.js/"
+    },
+    {
+      "library": "datatables.net-bs5@2.3.4",
+      "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "library": "html5-qrcode@2.3.8",
+      "destination": "wwwroot/lib/html5-qrcode/"
+    },
+    {
+      "library": "html2canvas@1.4.1",
+      "destination": "wwwroot/lib/html2canvas/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@4.0.0",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "jquery-validate@1.21.0",
+      "destination": "wwwroot/lib/jquery-validate/"
+    },
+    {
+      "library": "datatables.net@1.13.8",
+      "destination": "wwwroot/lib/datatables/"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Smart Barcode POS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    @* CSS Dependencies *@
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/toastr.js/toastr.min.css" rel="stylesheet" />
+    <link href="~/lib/datatables/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <div class="app">
+
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+        <partial name="_Sidebar" />
+
+        <main class="main">
+
+            <nav class="topbar">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-outline-primary mobile-menu" onclick="toggleSidebar()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div>
+                        <h5 class="mb-0 fw-bold">@ViewData["Title"]</h5>
+                        <small class="text-muted">Smart Barcode POS System</small>
+                    </div>
+                </div>
+
+                @{
+                    var displayName = User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "User";
+                    var displayEmail = User.Identity?.Name ?? "";
+                    var displayRole = User.IsInRole("Admin") ? "Administrator" : User.IsInRole("Cashier") ? "Cashier" : "Sub Admin";
+                    var avatarLetter = string.IsNullOrWhiteSpace(displayName) ? "U" : displayName.Substring(0, 1).ToUpper();
+                }
+
+                <div class="dropdown user-profile-dropdown">
+                    <button class="user-profile-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="user-avatar-sm">@avatarLetter</span>
+                        <span class="user-profile-text">
+                            <b>@displayRole</b>
+                            <small>@displayEmail</small>
+                        </span>
+                        <i class="fa-solid fa-chevron-down user-profile-chevron"></i>
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-end user-dropdown-menu">
+                   
+                        <a class="dropdown-item" asp-controller="Account" asp-action="MyProfile">
+                            <i class="fa-solid fa-user me-2"></i> My Profile
+                        </a>
+
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="dropdown-item text-danger">
+                                <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="content">
+                @RenderBody()
+            </div>
+
+        </main>
+
+    </div>
+}
+else
+{
+    @RenderBody()
+}
+
+@* JS Dependencies *@
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/toastr.js/toastr.min.js"></script>
+<script src="~/lib/datatables/jquery.dataTables.min.js"></script>
+<script src="~/lib/datatables/dataTables.bootstrap5.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<script>
+    // Global toastr configuration
+    toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+        timeOut: '3500',
+    };
+
+    @if (TempData["Success"] != null) { <text>toastr.success('@TempData["Success"]');</text> }
+    @if (TempData["Error"]   != null) { <text>toastr.error('@TempData["Error"]');</text> }
+</script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

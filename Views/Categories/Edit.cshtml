@@ -1,0 +1,53 @@
+@model CategoryViewModel
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<div class="card">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <h5 class="fw-bold mb-0">Edit Category</h5>
+        <small class="text-muted">Change brand, category name and active/inactive status.</small>
+    </div>
+
+    <div class="card-body p-4">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="CategoryId" type="hidden" />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="BrandId" class="form-label">Brand <span class="text-danger">*</span></label>
+                    <select asp-for="BrandId" asp-items="Model.Brands" class="form-select">
+                        <option value="">Select Brand</option>
+                    </select>
+                    <span asp-validation-for="BrandId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="CategoryName" class="form-label">Category Name <span class="text-danger">*</span></label>
+                    <input asp-for="CategoryName" class="form-control" placeholder="" />
+                    <span asp-validation-for="CategoryName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="IsActive" class="form-label">Status</label>
+                    <select asp-for="IsActive" class="form-select">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button class="btn btn-success px-4">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Update Category
+                </button>
+                <a asp-action="Index" class="btn btn-light">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
